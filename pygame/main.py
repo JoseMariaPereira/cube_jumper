@@ -15,7 +15,7 @@ def main():
     fondo = pygame.image.load('img/bg/bg.jpg')
     fondo = pygame.transform.scale(fondo, (1280, 720))
     player = pygame.image.load('img/player/player.png')
-    player = pygame.transform.scale(player, (60, 60))
+    player = pygame.transform.scale(player, (50, 50))
 
     cube = Cube()
 
@@ -81,7 +81,7 @@ def main():
             spikes.remove(spi)
 
         # move world
-        variables.screenPosition += dt * (variables.gameSpeed + 50)
+        variables.screenPosition += dt * (variables.gameSpeed * variables.screenSpeed)
         variables.score += dt * (variables.gameSpeed) / 5
 
         # check collision

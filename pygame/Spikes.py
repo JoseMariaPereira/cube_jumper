@@ -15,7 +15,7 @@ class Spike:
         self.width = surface.get_width()
 
     def move(self, deltatime):
-        self.position_x += deltatime * (variables.gameSpeed + 50)
+        self.position_x += deltatime * (variables.gameSpeed * variables.screenSpeed)
         if self.position_x <= -self.width:
             return False
         return True

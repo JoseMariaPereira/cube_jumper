@@ -1,7 +1,9 @@
 title = "El mejor de los juegos!"
 
-gravity = 10
+gravity = 15
 gameSpeed = 1
+
+screenSpeed = 100
 
 screenPosition = 0
 score = 0

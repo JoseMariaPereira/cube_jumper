@@ -1,22 +1,37 @@
 from pygame.locals import *
+from enum import Enum
 
 import Spikes
 import variables
 import pygame
 
 
+class GroundSize(Enum):
+    NONE = (0, 0)
+    START_GROUND = (1280, 100)
+    SMALL_RECT = (50, 20)
+    SMALL_CUBE = (50, 50)
+    MEDIUM_RECT = (200, 50)
+    BIG_RECT = (300, 50)
+
+
 class MiniGround:
 
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width=0, height=0, size: GroundSize = GroundSize.NONE):
         self.startPosx = x
         self.position_x = x
         self.position_y = y
-        self.startRect = Rect(x, y, width, height)
+        w = width
+        h = height
+        if size != GroundSize.NONE:
+            w = size.value[0]
+            h = size.value[1]
+        self.startRect = Rect(x, y, w, h)
         self.rect: Rect = self.startRect
-        self.width = width
+        self.width = w
 
     def move(self, deltaTime):
-        self.position_x += deltaTime * (variables.gameSpeed + 50)
+        self.position_x += deltaTime * (variables.gameSpeed * variables.screenSpeed)
         if self.position_x <= -self.width:
             return False
         return True
@@ -24,7 +39,7 @@ class MiniGround:
 allGrounds = list((
         MiniGround(x=0, y=620, width=1100, height=100),
         MiniGround(x=1250, y=500, width=350, height=50),
-        MiniGround(x=1750, y=400, width=300, height=50),
+        MiniGround(x=1750, y=400, size=GroundSize.BIG_RECT),
         MiniGround(x=2150, y=600, width=200, height=50),
         MiniGround(x=2500, y=500, width=300, height=50),
         MiniGround(x=3000, y=500, width=50, height=50),
