@@ -32,9 +32,7 @@ def main():
 
     while True:
         if variables.levelUp and variables.screenPosition > 0:
-            variables.gameSpeed += 0.2
-            Spikes.addSpikeToLevel()
-            variables.levelUp = False
+            levelUp()
 
         # instantiate
         dt = variables.gameSpeed/clock.tick(60)
@@ -58,6 +56,11 @@ def main():
 
         # check for events
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit(0)
+
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit(0)
@@ -82,7 +85,7 @@ def main():
 
         # move world
         variables.screenPosition += dt * (variables.gameSpeed * variables.screenSpeed)
-        variables.score += dt * (variables.gameSpeed) / 5
+        variables.score += dt * variables.gameSpeed * variables.level / 5
 
         # check collision
         for mg in miniGrounds:
@@ -91,15 +94,12 @@ def main():
                 cube.jumping = not cube.stopJumping(miniGround_rect, player_rect)
 
         for s in spikes:
-            srect = s.rect
-            if player_rect.colliderect(srect):
-                pygame.quit()
-                sys.exit(0)
+            if player_rect.colliderect(s.rect):
+                return
 
         # check death
         if player_rect.colliderect(deathpit_rect):
-            pygame.quit()
-            sys.exit(0)
+            return
 
         # controll jumpstate
         cube.jumping = cube.jumpSpeed != 0
@@ -125,5 +125,22 @@ def generateDeathPit(screen: pygame.Surface):
                                   variables.screenWidth,
                                   variables.screenWidth))
 
+def gameStartUp():
+    variables.screenPosition = 0
+    variables.score = 0
+    variables.gameSpeed = 1
+    variables.generatedGrounds.clear()
+    variables.levelUp = False
+    variables.levelSpikes.clear()
+    variables.level = 1
+    variables.spikeNumber = 0
+
+def levelUp():
+    variables.level += 1
+    variables.gameSpeed += 0.05
+    variables.levelUp = False
+
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
+        gameStartUp()

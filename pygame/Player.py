@@ -18,7 +18,7 @@ class Cube:
         return True
 
     def applyGravity(self, deltaTime):
-        speed = variables.gravity * float(deltaTime)
+        speed = variables.gravity * float(deltaTime) * variables.gameSpeed
         self.position_y += self.jumpSpeed * speed
         self.jumpSpeed += speed
 
